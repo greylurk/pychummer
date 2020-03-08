@@ -30,7 +30,7 @@ class Database():
                 id integer primary key autoincrement, 
                 name varchar(255) 
             )""", self._db).exec_()
-        self.add_runner(Runner(id=None, name="Chummer"))
+        self.save_runner(Runner(id=None, name="Chummer"))
 
 
     def get_runners(self) -> QSqlQuery:
@@ -38,10 +38,17 @@ class Database():
         query = QSqlQuery("SELECT name FROM runners", self._db)
         return query
 
-    def add_runner(self, runner: Runner) -> Runner:
+    def save_runner(self, runner: Runner) -> Runner:
         '''Add a runner to the SQLite Database'''
-        query = QSqlQuery("INSERT INTO runners (id, name) values (?, ?)", self._db)
-        query.bindValue(0, runner.id)
-        query.bindValue(1, runner.name)
-        query.exec_()
-        runner.id = query.lastInsertId()
+        if runner.id is not None:
+            _update_runner = QSqlQuery(self._db)
+            _update_runner.prepare("UPDATE runners SET name=:name where id=:id")
+            _update_runner.bindValue(":id", runner.id)
+            _update_runner.bindValue(":name", runner.name)
+            _update_runner.exec_()
+        if runner.id is None or _update_runner.numRowsAffected == 0:
+            _insert_runner = QSqlQuery("INSERT INTO runners (name) values (:name)", self._db)
+            _insert_runner.bindValue(":name", runner.name)
+            _insert_runner.exec_()
+            runner.id = _insert_runner.lastInsertId()
+        return runner

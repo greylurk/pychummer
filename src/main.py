@@ -1,27 +1,17 @@
 '''open a window'''
-from PyQt5.QtWidgets import QApplication, QVBoxLayout, QLabel, QListView, QWidget
-from PyQt5.QtSql import QSqlTableModel
+from PyQt5.QtWidgets import QApplication
 from model import Database
+from view import CharacterListPanel
 
-app = QApplication([])
+def main():
+    '''Start a new pychummer application'''
+    app = QApplication([])
+    database = Database()
+    view = CharacterListPanel(database=database)
 
-window = QWidget()
+    view.widget().show()
 
-layout = QVBoxLayout()
+    app.exec_()
 
-label = QLabel("Hello World!")
-layout.addWidget(label)
-
-database = Database()
-
-model = QSqlTableModel()
-model.setQuery(database.get_runners())
-
-listView = QListView()
-listView.setModel(model)
-layout.addWidget(listView)
-
-window.setLayout(layout)
-window.show()
-
-app.exec_()
+if __name__ == "__main__":
+    main()
