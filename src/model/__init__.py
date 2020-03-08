@@ -30,7 +30,7 @@ class Database():
                 id integer primary key autoincrement, 
                 name varchar(255) 
             )""", self._db).exec_()
-        self.add_runner(Runner(name="Chummer"))
+        self.add_runner(Runner(id=None, name="Chummer"))
 
 
     def get_runners(self) -> QSqlQuery:
