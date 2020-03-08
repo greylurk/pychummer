@@ -8,9 +8,8 @@ setup(
    author_email='adam.ness@gmail.com',
    packages=find_packages(),
    install_requires=['PyQt5==5.14.1'], #external packages as dependencies
-   scripts=['scripts/main.py'],
-   package_data=[
-       "README.md",
-       "LICENSE"
-   ]
+   scripts=['scripts/pychummer'],
+   package_data={
+       "": ["README.md", "LICENSE"]
+   }
 )

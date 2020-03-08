@@ -1,6 +1,7 @@
 '''Views for the pychummer'''
-from PyQt5.QtWidgets import QVBoxLayout, QLabel, QListView, QWidget, QPushButton
+from PyQt5.QtCore import QObject, pyqtSlot
 from PyQt5.QtSql import QSqlTableModel
+from PyQt5.QtWidgets import QVBoxLayout, QLabel, QListView, QWidget, QPushButton
 from pychummer.model import Runner
 
 class CharacterListPanel(QWidget):
