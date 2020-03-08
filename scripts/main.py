@@ -1,15 +1,15 @@
+#!/usr/bin/env python3
 '''open a window'''
 from PyQt5.QtWidgets import QApplication
-from model import Database
-from view import CharacterListPanel
+from pychummer.model import Database
+from pychummer.view import CharacterListPanel
 
 def main():
     '''Start a new pychummer application'''
     app = QApplication([])
     database = Database()
-    view = CharacterListPanel(database=database)
 
-    view.widget().show()
+    view = CharacterListPanel(database=database)
 
     app.exec_()
 
