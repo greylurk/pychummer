@@ -1,15 +1,9 @@
 """
 A module to contain the model for the PyChummer database
 """
-from PyQt5.QtCore import qDebug
+from PyQt5.QtCore import qDebug, qFatal
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery 
-from dataclasses import dataclass
-
-@dataclass
-class Runner():
-    '''Class for tracking a Shadowrunnner'''
-    name: str
-    id: int = None
+from pychummer.model.runner import Runner, RunnerListModel
 
 class Database():
     """
@@ -19,7 +13,7 @@ class Database():
         self._db: QSqlDatabase = QSqlDatabase.addDatabase("QSQLITE")
         self._db.setDatabaseName("runners.db")
         if not self._db.open():
-            print("Something awful has happened")
+            qFatal("Something awful has happened")
 
         self._setup_runners()
 
@@ -32,10 +26,9 @@ class Database():
             )""")
         self.save_runner(Runner("Chummer"))
 
-    def get_runners(self) -> QSqlQuery:
-        '''Get a list of the runners as a QSqlQuery'''
-        query = QSqlQuery("SELECT name FROM runners", self._db)
-        return query
+    def runner_list_model(self) -> RunnerListModel:
+        '''Get a ListModel of the runners'''
+        return RunnerListModel(self._db)
 
     def save_runner(self, runner: Runner) -> Runner:
         '''Add a runner to the SQLite Database'''
